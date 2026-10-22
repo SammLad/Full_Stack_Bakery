@@ -7,12 +7,14 @@ function EsCakeForm() {
     const [producto_reposteria, setProductoReposteria] = useState('')
     const [cliente, setCliente] = useState('')
     const [precio_total, setPrecioTotal] = useState('')
+    const [errorMensaje, setErrorMensaje] = useState("");
     const params = useParams()
     const navigate = useNavigate()
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrorMensaje("");
 
         const datosPedido = {
             producto_reposteria,
@@ -31,6 +33,11 @@ function EsCakeForm() {
             navigate("/");
         } catch (error) {
             console.log(error);
+            if (error.response && error.response.status === 400) {
+                setErrorMensaje(error.response.data.detail);
+            } else {
+                setErrorMensaje("Ocurrió un error inesperado al procesar la solicitud.");
+            }
         }
     };
 
@@ -54,6 +61,12 @@ function EsCakeForm() {
                     <h1 className="text-2xl font-bold mb-6 text-emerald-950 tracking-tight">
                         {params.id ? "Actualizar Pedido Especial" : "Realizar Pedido Especial"}
                     </h1>
+
+                    {errorMensaje && (
+                        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm font-medium flex items-center gap-2">
+                            <p>{errorMensaje}</p>
+                        </div>
+                    )}
 
                     <div className="space-y-4">
                         <div>
@@ -101,12 +114,18 @@ function EsCakeForm() {
                     <button
                         className="w-full mt-3 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 font-semibold py-2.5 px-4 rounded-xl transition-all duration-200 active:scale-95"
                         onClick={async () => {
-                            try {
-                                const res = await deletePedidoEs(params.id)
-                                console.log(res)
-                                navigate("/")
-                            } catch (error) {
-                                console.log(error)
+                            // 1. Mostrar la ventana de confirmación del navegador
+                            const confirmado = window.confirm("¿Estás seguro de que deseas eliminar este pedido?");
+
+                            // 2. Si el usuario hace clic en "Aceptar", se ejecuta la lógica de borrado
+                            if (confirmado) {
+                                try {
+                                    const res = await deletePedidoEs(params.id);
+                                    console.log(res);
+                                    navigate("/");
+                                } catch (error) {
+                                    console.log(error);
+                                }
                             }
                         }}
                     >
