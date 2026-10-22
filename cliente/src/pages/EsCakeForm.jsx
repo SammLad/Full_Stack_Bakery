@@ -114,10 +114,8 @@ function EsCakeForm() {
                     <button
                         className="w-full mt-3 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 font-semibold py-2.5 px-4 rounded-xl transition-all duration-200 active:scale-95"
                         onClick={async () => {
-                            // 1. Mostrar la ventana de confirmación del navegador
                             const confirmado = window.confirm("¿Estás seguro de que deseas eliminar este pedido?");
 
-                            // 2. Si el usuario hace clic en "Aceptar", se ejecuta la lógica de borrado
                             if (confirmado) {
                                 try {
                                     const res = await deletePedidoEs(params.id);

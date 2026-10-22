@@ -6,9 +6,9 @@ PyObjectId = Annotated[str, BeforeValidator(lambda v: str(v) if v is not None el
 
 class PedidosEs(BaseModel):
     id: Optional[PyObjectId] = Field(default=None, alias="_id")
-    producto_reposteria: str
-    cliente: str
-    precio_total: float
+    producto_reposteria: str = Field(..., min_length=3)
+    cliente: str = Field(..., min_length=3)
+    precio_total: float = Field(..., gt=100)
     entregado: bool = False
 
     model_config = {
