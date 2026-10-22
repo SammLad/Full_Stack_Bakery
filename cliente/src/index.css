@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #f8faf9;
+  /* Blanco con un matiz verde imperceptible */
+  color: #064e3b;
+  /* Verde esmeralda profundo (emerald-900) */
+  min-height: 100vh;
+}
